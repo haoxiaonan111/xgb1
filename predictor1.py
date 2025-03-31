@@ -70,9 +70,13 @@ if st.button("Predict"):
     # 预测类别的概率
     predicted_proba = model.predict_proba(features)[0]
 
-     # 显示预测结果
+    # 对概率值进行格式化，保留两位小数
+    formatted_proba = ["{:.2f}".format(prob) for prob in predicted_proba]
+    proba_str = ", ".join(formatted_proba)
+
+    # 显示预测结果
     st.write(f"**Predicted Class:** {predicted_class} (1: HAD risk, 0: No HAD risk)")
-    st.write(f"**Prediction Probabilities:** {predicted_proba}")
+    st.write(f"**Prediction Probabilities:** [{proba_str}]")
 
     # 根据预测结果生成建议
     probability = predicted_proba[predicted_class] * 100
@@ -131,3 +135,4 @@ if st.button("Predict"):
 
     plt.savefig("shap_force_plot.png", bbox_inches='tight', dpi=1200)
     st.image("shap_force_plot.png", caption='SHAP Force Plot Explanation')
+    
