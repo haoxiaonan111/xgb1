@@ -103,27 +103,31 @@ if st.button("Predict"):
         scipy.special.expit(shap_values.base_values)[:, np.newaxis] * 
         (1 - scipy.special.expit(shap_values.base_values)[:, np.newaxis])
 )
-    
-    explanation = shap.Explanation(
-    values=shap_values_prob[0],  
-    base_values=expected_value_prob[0],
-    data=X_test.iloc[0],  
-    feature_names=X_test.columns  
-)
-
     # 根据预测类别显示 SHAP 强制图
     # 期望值（基线值）
     # 解释类别 1（患病）的 SHAP 值
     # 特征值数据
     # 使用 Matplotlib 绘图
     if predicted_class == 1:
-        shap.force_plot(explanation)
+        shap.force_plot(
+         base_value=expected_value_prob[0],  # 模型的基线值
+         shap_values=shap_values_prob[0],  # SHAP 值
+         features=X_test.iloc[0],  # 特征数据
+         feature_names=X_test.columns,  # 特征名称
+         matplotlib=True  # 使用 matplotlib 绘图
+        )
     # 期望值（基线值）
     # 解释类别 0（未患病）的 SHAP 值
     # 特征值数据
     # 使用 Matplotlib 绘图
     else:
-        shap.force_plot(explanation)
+        shap.force_plot(
+         base_value=expected_value_prob[0],  # 模型的基线值
+         shap_values=shap_values_prob[0],  # SHAP 值
+         features=X_test.iloc[0],  # 特征数据
+         feature_names=X_test.columns,  # 特征名称
+         matplotlib=True  # 使用 matplotlib 绘图
+        )
 
     plt.savefig("shap_force_plot.png", bbox_inches='tight', dpi=1200)
-    st.image("shap_force_plot.png", caption='SHAP Force Plot Explanation') if predicted_class == 1:
+    st.image("shap_force_plot.png", caption='SHAP Force Plot Explanation')
