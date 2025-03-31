@@ -70,9 +70,13 @@ if st.button("Predict"):
     # 预测类别的概率
     predicted_proba = model.predict_proba(features)[0]
 
-     # 显示预测结果
+    # 对概率值进行格式化，保留三位小数
+    formatted_proba = ["{:.3f}".format(prob) for prob in predicted_proba]
+    proba_str = ", ".join(formatted_proba)
+
+    # 显示预测结果
     st.write(f"**Predicted Class:** {predicted_class} (1: HAD risk, 0: No HAD risk)")
-    st.write(f"**Prediction Probabilities:** {predicted_proba}")
+    st.write(f"**Prediction Probabilities:** [{proba_str}]")
 
     # 根据预测结果生成建议
     probability = predicted_proba[predicted_class] * 100
@@ -81,8 +85,7 @@ if st.button("Predict"):
         advice = (
             f"According to our model, you have a high risk of HAD. "
             f"The model predicts that your probability of developing HAD is {probability:.1f}%. "
-        )
-    # 如果预测类别为 0（低风险）
+     )
     else:
         advice = (
             f"According to our model, you have a low risk of HAD. "
@@ -97,7 +100,7 @@ if st.button("Predict"):
     explainer_shap = shap.Explainer(model)
     # 计算 SHAP 值，用于解释模型的预测
     shap_values = explainer_shap(features)
-    
+
     # 根据预测类别显示 SHAP 强制图
     # 期望值（基线值）
     # 解释类别 1（患病）的 SHAP 值
