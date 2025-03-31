@@ -81,8 +81,7 @@ if st.button("Predict"):
         advice = (
             f"According to our model, you have a high risk of HAD. "
             f"The model predicts that your probability of developing HAD is {probability:.1f}%. "
-        )
-    # 如果预测类别为 0（低风险）
+     )
     else:
         advice = (
             f"According to our model, you have a low risk of HAD. "
@@ -105,19 +104,26 @@ if st.button("Predict"):
         (1 - scipy.special.expit(shap_values.base_values)[:, np.newaxis])
 )
     
+    explanation = shap.Explanation(
+    values=shap_values_prob[0],  
+    base_values=expected_value_prob[0],
+    data=X_test.iloc[0],  
+    feature_names=X_test.columns  
+)
+
     # 根据预测类别显示 SHAP 强制图
     # 期望值（基线值）
     # 解释类别 1（患病）的 SHAP 值
     # 特征值数据
     # 使用 Matplotlib 绘图
     if predicted_class == 1:
-        shap.force_plot(explainer_shap.shap_values_prob, shap_values.values[0], pd.DataFrame(features, columns=feature_names), matplotlib=True)
+        shap.force_plot(explanation)
     # 期望值（基线值）
     # 解释类别 0（未患病）的 SHAP 值
     # 特征值数据
     # 使用 Matplotlib 绘图
     else:
-        shap.force_plot(explainer_shap.shap_values_prob, shap_values.values[0], pd.DataFrame(features, columns=feature_names), matplotlib=True)
+        shap.force_plot(explanation)
 
     plt.savefig("shap_force_plot.png", bbox_inches='tight', dpi=1200)
-    st.image("shap_force_plot.png", caption='SHAP Force Plot Explanation')
+    st.image("shap_force_plot.png", caption='SHAP Force Plot Explanation') if predicted_class == 1:
