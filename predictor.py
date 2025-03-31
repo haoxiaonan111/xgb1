@@ -60,7 +60,7 @@ Ejection_fraction = st.number_input("Ejection fraction:", min_value=1, max_value
 Depression_symptoms = st.number_input("Depression symptoms:", min_value=0, max_value=21, value=4)  
 
 # 处理输入数据并进行预测
-feature_values = [Age, Serum_creatinine, Total_cholesterol, Ejection_fraction, Rating_of_mobility, Medical_social_support, Depression_symptoms]  # 将用户输入的特征值存入列表
+feature_values = [Medical_social_support, Age, Serum_creatinine, Total_cholesterol, Rating_of_mobility, Ejection_fraction, Depression_symptoms]  # 将用户输入的特征值存入列表
 features = np.array([feature_values])  # 将特征转换为 NumPy 数组，适用于模型输入
 
 # 当用户点击 "Predict" 按钮时执行以下代码
@@ -78,10 +78,16 @@ if st.button("Predict"):
     probability = predicted_proba[predicted_class] * 100
     # 如果预测类别为 1（高风险）
     if predicted_class == 1:
-        advice = ( f"Based on feature values, predicted possibility of HAD is {probability:.1f}%. ")
+        advice = (
+            f"According to our model, you have a high risk of HAD. "
+            f"The model predicts that your probability of developing HAD is {probability:.1f}%. "
+        )
     # 如果预测类别为 0（低风险）
     else:
-        advice = ( f"Based on feature values, predicted possibility of HAD is {probability:.1f}%. ")
+        advice = (
+            f"According to our model, you have a low risk of HAD. "
+            f"The model predicts that your probability of not developing HAD is {probability:.1f}%. "
+        )
     # 显示建议
     st.write(advice)
   
