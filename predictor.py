@@ -1,3 +1,13 @@
+#### 0.设置工作路径
+import os
+
+# 设置工作路径
+os.chdir("rD:\博士课题\纵向数据2")
+
+# 获取并打印当前工作路径
+current_path = os.getcwd()
+print("当前工作路径:", current_path)
+
 # 导入 Streamlit 库，用于构建 Web 应用
 import streamlit as st  
 
@@ -36,7 +46,7 @@ feature_names = [
     "Depression_symptoms",   # 抑郁症状  
 ]  
 # Streamlit 用户界面
-st.title("Predictor of HAD in older patients with acute HF")  # 设置网页标题
+st.title("Prediction of HAD in older patients with acute heart failure")  # 设置网页标题
 
 # 医疗社会支持：数值输入框
 Medical_social_support = st.number_input("Medical social support:", min_value=19, max_value=95, value=43)  
